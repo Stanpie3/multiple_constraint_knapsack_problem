@@ -14,6 +14,8 @@ struct Node {
     vector<float> solution;
 };
 
+bool test_feasible(const vector<float> sol, const vector<vector<int>>& A, const vector<int>& b);
+
 bool operator == (const Node& lhs, const Node& rhs);
 
 void remove_a_from_b(const set<int>& A, vector<int>& b);

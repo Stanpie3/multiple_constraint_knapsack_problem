@@ -5,18 +5,17 @@
 #include <map>
 using namespace std;
 
-void generate_sample(const string& filename) {   //Генерация данных
+void generate_sample(const string& filename, int N, int M) {   //Генерация данных
     srand(time(NULL));
     ofstream output;
     vector<int> restrictions;
     output.open(filename);
-    int N = 15;
-    int M = 5;
     restrictions.resize(M);
     output << N << " " << M << '\n';
     for (int i = 0; i < N; i++) {
         output << rand() % 95 + 5 << " ";
     }
+    output << "\n";
     for (int j = 0; j < M; j++) {
         restrictions[j] = 0;
         for (int i = 0; i < N; i++) {
@@ -27,19 +26,23 @@ void generate_sample(const string& filename) {   //Генерация данных
         output << '\n';
     }
     for (auto e : restrictions) {
-        output << e - rand() % (e / 2) << " ";
+        output << e / 2 + rand() % (e/10) << " ";
     }
     output.close();
 }   // 
 
-void input_and_preparation(int& N, int& M, vector<int>& v, vector<int>& b,
-    vector<vector<int>>& A, vector<vector<int>>& Subscripts) {  // Ввод (или ввод+генерация) данных с проверочным выводом
+void input_and_preparation_manual(vector<int>& v, vector<int>& b, vector<vector<int>>& A, vector<vector<int>>& Subscripts) {  // Ввод (или ввод+генерация) данных с проверочным выводом
     int answer = 0;
     cout << " Input: 0 - I want to work with example, 1 - I want to generate, 2 - I want to work with previously generated: ";
     cin >> answer;
     fstream input;
     if (answer == 1) {
-        generate_sample("generated_input.txt");
+        int n, m;
+        cout << "Number of variables: ";
+        cin >> n;
+        cout << "Number of restrictions: ";
+        cin >> m;
+        generate_sample("generated_input.txt", n, m);
         input.open("generated_input.txt");
     }
     else if (answer == 2) {
@@ -48,7 +51,7 @@ void input_and_preparation(int& N, int& M, vector<int>& v, vector<int>& b,
     else {
         input.open("input.txt");
     }
-
+    int N, M;
     input >> N >> M;
     v.resize(N);
     for (int i = 0; i < N; i++) {
